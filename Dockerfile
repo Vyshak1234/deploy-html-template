@@ -1,5 +1,5 @@
 # Use an existing nginx image as the base
-FROM httpd
+FROM httpd:latest
 
 # Copy the HTML/CSS files to the nginx public directory
 COPY . /usr/local/apache2/htdocs/
