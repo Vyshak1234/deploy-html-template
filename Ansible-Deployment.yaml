@@ -1,0 +1,25 @@
+- name: Build and deploy container
+  hosts: dockerservers
+  remote_user: root
+  tasks:
+    - name: copy the files to remote server
+      become: true
+      copy:
+        src: /var/lib/jenkins/workspace/ansible-jenkins-pipeline
+        dest: /home/ubuntu/project
+        remote_src: true
+
+    - name: Build Docker Image
+      docker_image: 
+        name: mico:latest
+        build:
+          path: /home/ubuntu/project
+        state: present
+
+    - name: Creating a container
+      docker_container:
+        name: mico-container
+        image: mico:latest
+        ports:
+          - "80:80"
+        state: started
